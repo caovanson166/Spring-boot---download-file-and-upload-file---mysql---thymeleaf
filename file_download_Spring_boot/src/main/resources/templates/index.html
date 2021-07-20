@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<style>
+	img#thumbnail {
+    width: 600px;
+    height: 300px;
+	}
+</style>
+<body>
+	<h1>hello</h1>
+	<form action="/upload" method="post"
+		enctype="multipart/form-data"
+	>
+		<div>
+			<h2>Documents Manager</h2>
+		</div>
+		<div>
+			<h3>Upload Your Files :</h3>
+			<div>[[${message}]]</div>
+			<th:block th:each="a:${list}">
+				<span>
+					<div>
+						<a th:href="@{'/download?id='+${a.id}}">[[${a.name}]]</a>
+					</div>
+					<div>
+						([[${#numbers.formatInteger(a.size,4,'COMMA')}]] bytes)
+					</div>
+				</span>
+			</th:block>
+			<p>
+				<input type="file" name="documents" required="required">
+			</p>
+			<p>
+				<input type="submit" value="Upload">
+			</p>
+		</div>
+	</form>
+	
+	<div >
+		<input type="file" name="image" id="image" accept="image/png,image/jpeg">
+	</div>
+	<img alt="Logo Preview" id="thumbnail">
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#image").change(function(){
+				showImg(this);
+			})			
+			
+		})	
+		
+		function showImg(fileInput){
+			file =fileInput.files[0];
+			reader=new FileReader();
+			reader.onload=function(e){
+				$("#thumbnail").attr('src',e.target.result);
+			}
+			reader.readAsDataURL(file);
+		}
+	</script>
+</body>
+</html>
